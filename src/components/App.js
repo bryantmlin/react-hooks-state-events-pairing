@@ -1,19 +1,29 @@
 import video from "../data/video.js";
+import Video from "./Video.js";
+import Details from "./Details.js";
+import React, {useState} from "react";
+import CommentsForm from "./CommentsForm.js"
 
 function App() {
   console.log("Here's your data:", video);
 
+  const [isClicked,setIsClicked] = useState(false)
+
+  function handleHideComments() {
+    setIsClicked(!isClicked)
+    console.log(isClicked)
+  }
+  const [search, setSearch] = useState("")
+
+  const commentsToShow = video.comments
+  .filter((comment) => comment.comment.toLowerCase().includes(search.toLowerCase()))
+
   return (
-    <div className="App">
-      <iframe
-        width="919"
-        height="525"
-        src="https://www.youtube.com/embed/dQw4w9WgXcQ"
-        frameBorder="0"
-        allowFullScreen
-        title="Thinking in React"
-      />
-    </div>
+    <div>
+   <Video video = {video}/>
+   <Details video = {video} />
+   <CommentsForm comments = {commentsToShow} onHideComments={handleHideComments} isClicked={isClicked} search={search} onSearchChange={setSearch} />
+   </div>
   );
 }
 
